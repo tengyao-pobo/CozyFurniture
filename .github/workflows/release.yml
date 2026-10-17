@@ -1,10 +1,12 @@
 name: Release
 
-# 推送 v* 標籤（例如 v1.0.0）時，自動編譯插件並發佈到 GitHub Releases
+# 推送到 main 時，若 build.gradle.kts 裡的版本號還沒有對應的 Release，
+# 就自動編譯插件、建立 v版本號 標籤並發佈到 GitHub Releases。
+# 要發新版：修改 build.gradle.kts 的預設版本號後推送即可。也可以在 Actions 頁面手動執行。
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,21 +17,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 讀取版本號
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(grep -oP 'getOrElse\("\K[^"]+' build.gradle.kts)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION 已經發佈過，略過。"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/setup-java@v4
+        if: steps.version.outputs.exists == 'false'
         with:
           distribution: temurin
           java-version: "25"
 
       - uses: gradle/actions/setup-gradle@v4
+        if: steps.version.outputs.exists == 'false'
 
       - name: 編譯
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          ./gradlew build -PpluginVersion="$VERSION"
+        if: steps.version.outputs.exists == 'false'
+        run: ./gradlew build
 
       - name: 發佈 Release
+        if: steps.version.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
-          name: CozyFurniture ${{ github.ref_name }}
+          tag_name: v${{ steps.version.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: CozyFurniture ${{ steps.version.outputs.version }}
           body_path: .github/release-notes.md
           files: build/libs/*.jar
