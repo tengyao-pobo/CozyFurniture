@@ -3,6 +3,8 @@
 適用於 **Paper 26.3**（Java 25）的傢俱插件。
 全部外觀都用原版的「方塊展示實體（Block Display）」組成，**不需要任何資源包**，玩家直接進服就看得到。
 
+**下載：** [最新版 Releases](https://github.com/tengyao-pobo/CozyFurniture/releases/latest)
+
 ![傢俱預覽](docs/preview.png)
 
 ## 傢俱一覽
@@ -147,3 +149,8 @@ bookshelf:
 ```
 
 把 jar 放進伺服器的 `plugins/` 資料夾後重啟即可。
+
+## 發佈新版本
+
+修改 `build.gradle.kts` 中 `getOrElse("1.0.0")` 的版本號並推送到 `main`，
+GitHub Actions 會自動編譯並建立對應的 `v版本號` Release（已發佈過的版本會自動略過）。
