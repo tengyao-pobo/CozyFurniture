@@ -1,0 +1,25 @@
+name: CozyFurniture
+version: '${version}'
+main: tw.cozy.furniture.CozyFurniture
+api-version: '26.3'
+description: 以展示實體打造的傢俱插件：桌子、椅子、書櫃、鞦韆、樹鞦韆，不需要資源包。
+author: CozyFurniture
+
+permissions:
+  cozyfurniture.place:
+    description: 放置傢俱
+    default: true
+  cozyfurniture.break:
+    description: 拆除傢俱
+    default: true
+  cozyfurniture.use:
+    description: 使用傢俱（坐下、開書櫃、在桌上擺物品）
+    default: true
+  cozyfurniture.menu:
+    description: 開啟傢俱目錄並直接取得傢俱
+    default: op
+  cozyfurniture.admin:
+    description: 管理指令（give / remove / reload）
+    default: op
+    children:
+      cozyfurniture.menu: true

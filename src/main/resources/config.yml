@@ -1,0 +1,42 @@
+# ───────────────────────────────────────────
+#  CozyFurniture 設定檔
+# ───────────────────────────────────────────
+
+# 桌子、書櫃、樹幹是否放置「屏障方塊」產生實體碰撞
+# （可以站上桌子、不能穿過書櫃）。椅子與鞦韆永遠不會有碰撞。
+collision: true
+
+# 是否需要蹲下 + 左鍵才能拆除傢俱（避免誤拆）
+break-require-sneak: false
+
+# 放置 / 拆除時是否觸發方塊事件，讓領地、保護插件可以阻擋
+respect-protection: true
+
+# 玩家進入伺服器時自動解鎖所有傢俱配方（顯示在配方書中）
+unlock-recipes: true
+
+# 坐下時座位的高度微調（方塊單位，負數 = 坐得更低）
+seat-height-offset: 0.0
+
+swing:
+  # 沒人坐時，隨風自然搖晃的幅度（度）
+  idle-amplitude: 7.0
+  # 有人坐上但沒有操作時維持的幅度（度）
+  rider-amplitude: 16.0
+  # 按住 W 盪鞦韆時可達到的最大幅度（度）
+  max-amplitude: 55.0
+  # 下雨 / 雷雨時，無人鞦韆的搖晃幅度倍率
+  storm-multiplier: 2.2
+
+table:
+  # 每張桌子最多可擺放的裝飾物品數量
+  max-decorations: 8
+
+bookshelf:
+  # 書櫃中允許放入的物品
+  allowed-items:
+    - BOOK
+    - WRITABLE_BOOK
+    - WRITTEN_BOOK
+    - ENCHANTED_BOOK
+    - KNOWLEDGE_BOOK
