@@ -66,15 +66,7 @@ public final class Models {
     /** 圓桌：以木條拼出圓形桌面，單柱腳 + 十字底座。 */
     public static Model roundTable() {
         Model m = new Model();
-        float r = 0.48f;
-        int strips = 9;
-        float w = 2 * 0.468f / strips;
-        for (int i = 0; i < strips; i++) {
-            float z0 = -0.468f + i * w;
-            float zc = z0 + w / 2f;
-            float half = (float) Math.sqrt(r * r - zc * zc);
-            m.add(box(Tex.PLANKS, -half, 0.81f, z0, half, 0.88f, z0 + w));
-        }
+        disc(m, Tex.PLANKS, 0.48f, 0.81f, 0.88f, 9);
         m.add(box(Tex.STRIPPED, -0.24f, 0.76f, -0.24f, 0.24f, 0.81f, 0.24f));
         m.add(box(Tex.STRIPPED, -0.09f, 0.1f, -0.09f, 0.09f, 0.76f, 0.09f));
         m.add(rot(Tex.PLANKS, 0f, 0.05f, 0f, 0.78f, 0.1f, 0.16f, Geo.yRot(45)));
@@ -82,6 +74,18 @@ public final class Models {
         m.tableTop = 0.88f;
         m.solid(0, 0, 0).hitbox(0, 0, 0, 1f, 0.9f);
         return m;
+    }
+
+    /** 以數條不重疊的木條拼出圓盤（避免旋轉方塊疊在一起變成星形、或表面閃爍）。 */
+    private static void disc(Model m, Tex tex, float r, float y0, float y1, int strips) {
+        float span = r * 0.975f;
+        float w = 2 * span / strips;
+        for (int i = 0; i < strips; i++) {
+            float z0 = -span + i * w;
+            float zc = z0 + w / 2f;
+            float half = (float) Math.sqrt(r * r - zc * zc);
+            m.add(box(tex, -half, y0, z0, half, y1, z0 + w));
+        }
     }
 
     private static void addLegsAndApron(Model m, float x0, float x1, float z0, float z1) {
@@ -127,8 +131,7 @@ public final class Models {
     /** 凳子：外八腳的小圓凳。 */
     public static Model stool() {
         Model m = new Model();
-        m.add(box(Tex.PLANKS, -0.29f, 0.56f, -0.29f, 0.29f, 0.64f, 0.29f));
-        m.add(rot(Tex.PLANKS, 0f, 0.6f, 0f, 0.58f, 0.07f, 0.58f, Geo.yRot(45)));
+        disc(m, Tex.PLANKS, 0.31f, 0.56f, 0.64f, 7);
         float a = 0.12f;
         for (int sx = -1; sx <= 1; sx += 2) {
             for (int sz = -1; sz <= 1; sz += 2) {
@@ -261,8 +264,7 @@ public final class Models {
     /** 落地燈：兩格高的立燈。右鍵開關。 */
     public static Model floorLamp() {
         Model m = new Model();
-        m.add(box(Tex.PLANKS, -0.2f, 0f, -0.2f, 0.2f, 0.05f, 0.2f));
-        m.add(rot(Tex.PLANKS, 0f, 0.03f, 0f, 0.4f, 0.06f, 0.4f, Geo.yRot(45)));
+        disc(m, Tex.PLANKS, 0.22f, 0f, 0.06f, 5);
         m.add(box(Tex.STRIPPED, -0.03f, 0.06f, -0.03f, 0.03f, 1.45f, 0.03f));
         m.add(box(BULB_OFF, -0.065f, 1.38f, -0.065f, 0.065f, 1.52f, 0.065f).glowing(BULB_ON));
         shade(m, 1.4f, 1.6f, 1.75f, 0.27f, 0.2f);

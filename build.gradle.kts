@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "tw.cozy"
-version = providers.gradleProperty("pluginVersion").getOrElse("1.0.0")
+version = providers.gradleProperty("pluginVersion").getOrElse("1.0.1")
 
 repositories {
     mavenCentral()
